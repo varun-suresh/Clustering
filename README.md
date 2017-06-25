@@ -1,9 +1,9 @@
 # Approximate Rank Order Clustering
 
 ## What's in this repository
-[clustering.py](https:github.com/varun-suresh/Clustering/clustering.py) - Contains the implementaion of the clustering algorithm.
+[clustering.py](https://github.com/varun-suresh/Clustering/blob/master/clustering.py) - Contains the implementaion of the clustering algorithm.
 
-[demo.py](https:github.com/varun-suresh/Clustering/clustering.py) - An example to demonstrate usage. To run this, you need to download the LFW data from [here](http://vis-www.cs.umass.edu/lfw/). For the face vectors, I used the results from Alfred Xiang Wu's [Face Verification Experiment](https://github.com/AlfredXiangWu/face_verification_experiment/tree/master/results)
+[demo.py](https://github.com/varun-suresh/Clustering/blob/master/demo.py) - An example to demonstrate usage. To run this, you need to download the LFW data from [here](http://vis-www.cs.umass.edu/lfw/). For the face vectors, I used the results from Alfred Xiang Wu's [Face Verification Experiment](https://github.com/AlfredXiangWu/face_verification_experiment/tree/master/results)
 
 TODO
 
@@ -27,6 +27,7 @@ Follow the instructions [here](http://www.cs.ubc.ca/research/flann/) to install 
 For the demo, download the LFW data and the face vectors as mentioned above and run
 
 ```
+cd Clustering
 python demo.py --lfw_path path_to_lfw_dir -v vector_file
 ```
 ## Citations
