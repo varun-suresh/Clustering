@@ -1,4 +1,4 @@
-# Clustering
+# Approximate Rank Order Clustering
 
 ## What's in this repository
 [clustering.py](https:github.com/varun-suresh/Clustering/clustering.py) - Contains the implementaion of the clustering algorithm.
