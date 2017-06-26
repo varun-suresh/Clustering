@@ -30,6 +30,8 @@ For the demo, download the LFW data and the face vectors as mentioned above and 
 cd Clustering
 python demo.py --lfw_path path_to_lfw_dir -v vector_file
 ```
+
+The number of clusters obtained by running the demo is quite similar to the results quoted in the paper. I will work on calculating the F-score for the clusters in the next week or two.
 ## Citations
 You should cite the following paper if you use the algorithm.
 ```
