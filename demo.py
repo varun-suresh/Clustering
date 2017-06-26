@@ -21,6 +21,9 @@ def plot_histogram(lfw_dir):
     print 'Singletons : {}\nTwo :{}\n'.format((df['Count'] == 1).sum(),
                                               (df['Count'] == 2).sum())
     plt.hist(df['Count'], bins=max(df['Count']))
+    plt.title('Cluster Sizes')
+    plt.xlabel('No of images in folder')
+    plt.ylabel('No of folders')
     plt.show()
 
 
@@ -44,3 +47,4 @@ if __name__ == '__main__':
         f = sio.loadmat(args['vector_file'])
         vectors = f['features']
         clusters = approximate_rank_order_clustering(vectors)
+        print 'No of clusters: {}'.format(len(clusters))
