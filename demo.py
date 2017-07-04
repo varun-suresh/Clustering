@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 import argparse
 import scipy.io as sio
 from clustering import cluster
+from evaluation import calculate_pairwise_precision
 
 
 def plot_histogram(lfw_dir):
@@ -35,6 +36,43 @@ def approximate_rank_order_clustering(vectors):
     return clusters
 
 
+def evaluate_clusters(clusters, labels_lookup):
+    """
+    This function calculates the pairwise precision and recall for the
+    clusters.
+    Input:
+        clusters: list of lists
+            Each list contains a set of integers that correspond to a particular
+            image in the LFW dataset.
+        labels: dict
+            It is a dictionary where the keys are row numbers and the values
+            are lables(string).
+    Output:
+        pairwise_precision: float
+            Fraction of pair of samples within a cluster that belong to one
+            identity
+
+        pairwise_recall: float
+            Fraction of pairs of samples within a cluster which are placed in
+            the same cluster over the total number of same cluster pairs within
+            the dataset.
+    """
+    calculate_pairwise_precision(clusters, labels_lookup)
+
+
+def create_labels_lookup(labels):
+    """
+    Create a dictionary where the key is the row number and the value is the
+    actual label.
+    In this case, labels is an array where the position corresponds to the row
+    number and the value is an integer indicating the label.
+    """
+    labels_lookup = {}
+    for idx, label in enumerate(labels):
+        labels_lookup[idx] = label[0][0][0]
+    return labels_lookup
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Approximate Rank Order Clustering Demo')
     parser.add_argument('--lfw_path', required=True,
@@ -42,9 +80,12 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--vector_file', required=False,
                         help="Path to where the vectors to be clustered are saved.")
     args = vars(parser.parse_args())
-    plot_histogram(args['lfw_path'])
+    # plot_histogram(args['lfw_path'])
     if args['vector_file']:
         f = sio.loadmat(args['vector_file'])
         vectors = f['features']
+        labels = f['labels_original']
         clusters = approximate_rank_order_clustering(vectors)
         print 'No of clusters: {}'.format(len(clusters))
+        labels_lookup = create_labels_lookup(labels)
+        evaluate_clusters(clusters, labels_lookup)
