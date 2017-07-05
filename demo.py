@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 import argparse
 import scipy.io as sio
 from clustering import cluster
-from evaluation import calculate_pairwise_precision
+from evaluation import calculate_pairwise_pr
 
 
 def plot_histogram(lfw_dir):
@@ -56,8 +56,17 @@ def evaluate_clusters(clusters, labels_lookup):
             Fraction of pairs of samples within a cluster which are placed in
             the same cluster over the total number of same cluster pairs within
             the dataset.
+
+        f1_score: float
+            Defined as the harmonic mean of precision and recall.
     """
-    calculate_pairwise_precision(clusters, labels_lookup)
+    precision, recall = calculate_pairwise_pr(clusters, labels_lookup)
+    f1_score = 2*precision*recall/(precision+recall)
+    print 'Precision : {}\nRecall : {}\nf1_score : {}'.format(precision,
+                                                              recall,
+                                                              f1_score
+                                                              )
+    return f1_score
 
 
 def create_labels_lookup(labels):
@@ -88,4 +97,4 @@ if __name__ == '__main__':
         clusters = approximate_rank_order_clustering(vectors)
         print 'No of clusters: {}'.format(len(clusters))
         labels_lookup = create_labels_lookup(labels)
-        evaluate_clusters(clusters, labels_lookup)
+        f1_score = evaluate_clusters(clusters, labels_lookup)

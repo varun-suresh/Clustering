@@ -1,6 +1,7 @@
 # Script to evaluate the performance of the clustering algorithm.
 import argparse
 from itertools import combinations
+from collections import defaultdict
 
 
 def count_correct_pairs(cluster, labels_lookup):
@@ -18,25 +19,33 @@ def count_correct_pairs(cluster, labels_lookup):
     return correct_pairs, total_pairs
 
 
-def calculate_pairwise_precision(clusters, labels_lookup):
+def calculate_pairwise_pr(clusters, labels_lookup):
     """
-    Given a cluster, return pairwise precision.
+    Given a cluster, return pairwise precision and recall.
     """
     correct_pairs = 0
     total_pairs = 0
+    # Precision
     for cluster in clusters:
         cp, tp = count_correct_pairs(cluster, labels_lookup)
         correct_pairs += cp
         total_pairs += tp
-    print correct_pairs, total_pairs
 
-
-def calculate_pairwise_recall():
-    """
-    Given all the clusters and the labels, calculate the pairwise recall for
-    the dataset.
-    """
-    raise NotImplementedError
+    # Recall:
+    gt_clusters = defaultdict(list)
+    # Count the actual number of possible true pairs:
+    for row_no, label in labels_lookup.iteritems():
+        gt_clusters[label].append(row_no)
+    true_pairs = 0
+    for cluster_id, cluster_items in gt_clusters.iteritems():
+        n = len(cluster_items)
+        true_pairs += n * (n-1)
+    print 'Correct Pairs that are in the same cluster:{}'.format(correct_pairs)
+    print 'Total pairs as per the clusters created: {}'.format(total_pairs)
+    print 'Total possible true pairs:{}'.format(true_pairs)
+    precision = float(correct_pairs)/total_pairs
+    recall = float(correct_pairs)/true_pairs
+    return precision, recall
 
 
 if __name__ == '__main__':
