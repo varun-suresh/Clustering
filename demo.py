@@ -32,7 +32,7 @@ def approximate_rank_order_clustering(vectors):
     """
     Cluster the input vectors.
     """
-    clusters = cluster(vectors)
+    clusters = cluster(vectors, n_neighbors=200, thresh=[1.8, 1.9, 2, 2.1, 2.2])
     return clusters
 
 
@@ -66,6 +66,7 @@ def evaluate_clusters(clusters, labels_lookup):
                                                               recall,
                                                               f1_score
                                                               )
+    print '---------------------------------------------------------'
     return f1_score
 
 
@@ -78,7 +79,7 @@ def create_labels_lookup(labels):
     """
     labels_lookup = {}
     for idx, label in enumerate(labels):
-        labels_lookup[idx] = label[0][0][0]
+        labels_lookup[idx] = int(label[0][0])
     return labels_lookup
 
 
@@ -94,7 +95,14 @@ if __name__ == '__main__':
         f = sio.loadmat(args['vector_file'])
         vectors = f['features']
         labels = f['labels_original']
-        clusters = approximate_rank_order_clustering(vectors)
-        print 'No of clusters: {}'.format(len(clusters))
+        clusters_thresholds = approximate_rank_order_clustering(vectors)
         labels_lookup = create_labels_lookup(labels)
-        f1_score = evaluate_clusters(clusters, labels_lookup)
+        for clusters in clusters_thresholds:
+            print 'No of clusters: {}'.format(len(clusters['clusters']))
+            print 'Threshold : {}'.format(clusters['threshold'])
+            f1_score = evaluate_clusters(clusters['clusters'], labels_lookup)
+        # n_faces = 0
+        # for c in clusters:
+        #     print c
+        #     n_faces += len(c)
+        # print 'No of faces : {}'.format(n_faces)
