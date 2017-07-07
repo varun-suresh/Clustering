@@ -3,8 +3,9 @@
 ## What's in this repository
 [clustering.py](https://github.com/varun-suresh/Clustering/blob/master/clustering.py) - Contains the implementaion of the clustering algorithm.
 
-[demo.py](https://github.com/varun-suresh/Clustering/blob/master/demo.py) - An example to demonstrate usage. To run this, you need to download the LFW data from [here](http://vis-www.cs.umass.edu/lfw/). For the face vectors, I used the results from Alfred Xiang Wu's [Face Verification Experiment](https://github.com/AlfredXiangWu/face_verification_experiment/tree/master/results)
+[demo.py](https://github.com/varun-suresh/Clustering/blob/master/demo.py) - An example to demonstrate usage. To run this, you need to download the LFW data from [here](http://vis-www.cs.umass.edu/lfw/). For the face vectors, I used the results from Alfred Xiang Wu's [Face Verification Experiment](https://github.com/AlfredXiangWu/face_verification_experiment/tree/master/results). Also evaluates clustering on the LFW dataset using `evaluation.py`.
 
+[evaluation.py](https://github.com/varun-suresh/Clustering/blob/master/demo.py) - Script to calculate pairwise precision and recall as explained in the paper.
 TODO
 
 [server.py](https:github.com/varun-suresh/Clustering) - Script to visualize the results.
@@ -31,7 +32,9 @@ cd Clustering
 python demo.py --lfw_path path_to_lfw_dir -v vector_file
 ```
 
-The number of clusters obtained by running the demo is quite similar to the results quoted in the paper. I will work on calculating the F-score for the clusters in the next week or two.
+## Results
+The best result I have so far is an f1 score of `0.48`, the precision drops quite drastically as the recall increases. I will plot the results in the next couple of days and visualize the results to better understand why the results are not close to the results in the paper.
+
 ## Citations
 You should cite the following paper if you use the algorithm.
 ```
