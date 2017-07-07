@@ -30,7 +30,6 @@ def calculate_pairwise_pr(clusters, labels_lookup):
         cp, tp = count_correct_pairs(cluster, labels_lookup)
         correct_pairs += cp
         total_pairs += tp
-
     # Recall:
     gt_clusters = defaultdict(list)
     # Count the actual number of possible true pairs:
@@ -39,7 +38,7 @@ def calculate_pairwise_pr(clusters, labels_lookup):
     true_pairs = 0
     for cluster_id, cluster_items in gt_clusters.iteritems():
         n = len(cluster_items)
-        true_pairs += n * (n-1)
+        true_pairs += n * (n-1)/2.0
     print 'Correct Pairs that are in the same cluster:{}'.format(correct_pairs)
     print 'Total pairs as per the clusters created: {}'.format(total_pairs)
     print 'Total possible true pairs:{}'.format(true_pairs)
