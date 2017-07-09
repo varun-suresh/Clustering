@@ -33,7 +33,11 @@ python demo.py --lfw_path path_to_lfw_dir -v vector_file
 ```
 
 ## Results
+### f1 score:
 The best result I have so far is an f1 score of `0.48`, the precision drops quite drastically as the recall increases. I will plot the results in the next couple of days and visualize the results to better understand why the results are not close to the results in the paper.
+
+### Timing:
+Using python's multiprocessing module, clustering LFW faces took about ~40 seconds. I did this on an 8-core machine using 4 processes(Using all 8 does not improve it by much because some cores are needed for background processes). The same experiment took 7 seconds on a 20 core machine.
 
 ## Citations
 You should cite the following paper if you use the algorithm.
