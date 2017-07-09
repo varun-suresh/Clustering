@@ -5,7 +5,8 @@ import pyflann
 import numpy as np
 from time import time
 from profilehooks import profile
-import scipy.io as sio
+from multiprocessing import Pool
+from functools import partial
 
 
 def build_index(dataset, n_neighbors):
@@ -69,9 +70,11 @@ def calculate_symmetric_dist(app_nearest_neighbors):
     dist_calc_time = time()
     nn_lookup = create_neighbor_lookup(app_nearest_neighbors)
     d = np.zeros(app_nearest_neighbors.shape)
-    for row_no in range(app_nearest_neighbors.shape[0]):
-        d[row_no, :] = calculate_symmetric_dist_row(app_nearest_neighbors,
-                                                    nn_lookup, row_no)
+    p = Pool(processes=4)
+    func = partial(calculate_symmetric_dist_row, app_nearest_neighbors, nn_lookup)
+    results = p.map(func, range(app_nearest_neighbors.shape[0]))
+    for row_no, row_val in enumerate(results):
+        d[row_no, :] = row_val
     d_time = time()-dist_calc_time
     print 'Distance calculation time : {}'.format(d_time)
     return d
@@ -169,9 +172,11 @@ def cluster(descriptor_matrix, n_neighbors=20, thresh=[2]):
 
 
 if __name__ == '__main__':
-    descriptor_matrix = np.random.rand(30, 180)
-    clusters = cluster(descriptor_matrix, n_neighbors=5)
-    n_faces = 0
-    for c in clusters:
-        n_faces += len(c)
-    print clusters
+    descriptor_matrix = np.random.rand(15000, 180)
+    app_nearest_neighbors, dists = build_index(descriptor_matrix, n_neighbors=200)
+    distance_matrix = calculate_symmetric_dist(app_nearest_neighbors)
+    # clusters = cluster(descriptor_matrix, n_neighbors=5)
+    # n_faces = 0
+    # for c in clusters:
+    #     n_faces += len(c)
+    # print clusters
