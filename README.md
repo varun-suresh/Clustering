@@ -1,5 +1,6 @@
 # Approximate Rank Order Clustering
 
+This repository contains an implementation of [this](https://arxiv.org/pdf/1604.00989.pdf) paper.
 ## What's in this repository
 [clustering.py](https://github.com/varun-suresh/Clustering/blob/master/clustering.py) - Contains the implementaion of the clustering algorithm.
 
@@ -59,4 +60,6 @@ Face verification experiment
   journal={arXiv preprint arXiv:1511.02683},
   year={2015}
 }
+
+If you use this implementation, please consider citing this implementation and code repository.
 ```
