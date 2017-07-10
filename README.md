@@ -60,6 +60,5 @@ Face verification experiment
   journal={arXiv preprint arXiv:1511.02683},
   year={2015}
 }
-
-If you use this implementation, please consider citing this implementation and code repository.
 ```
+If you use this implementation, please consider citing this implementation and code repository.
