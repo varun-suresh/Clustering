@@ -3,6 +3,7 @@ import os
 import pandas as pd
 from matplotlib import pyplot as plt
 import argparse
+import json
 import scipy.io as sio
 from clustering import cluster
 from evaluation import calculate_pairwise_pr
@@ -32,7 +33,7 @@ def approximate_rank_order_clustering(vectors):
     """
     Cluster the input vectors.
     """
-    clusters = cluster(vectors, n_neighbors=200, thresh=[1.8, 1.9, 2, 2.1, 2.2])
+    clusters = cluster(vectors, n_neighbors=20, thresh= [2.2])
     return clusters
 
 
@@ -94,13 +95,22 @@ if __name__ == '__main__':
     if args['vector_file']:
         f = sio.loadmat(args['vector_file'])
         vectors = f['features']
-        labels = f['labels_original']
+        labels = f['labels_original'][0]
         clusters_thresholds = approximate_rank_order_clustering(vectors)
-        labels_lookup = create_labels_lookup(labels)
-        for clusters in clusters_thresholds:
-            print 'No of clusters: {}'.format(len(clusters['clusters']))
-            print 'Threshold : {}'.format(clusters['threshold'])
-            f1_score = evaluate_clusters(clusters['clusters'], labels_lookup)
+        clusters_at_th = clusters_thresholds[0]
+        clusters_to_be_saved = {}
+        for i, cluster in enumerate(clusters_at_th["clusters"]):
+            c = [int(x) for x in list(cluster)]
+            clusters_to_be_saved[i] = c
+
+        with open("clusters.json","w") as f:
+            json.dump(clusters_to_be_saved, f)
+
+        # labels_lookup = create_labels_lookup(labels)
+        # for clusters in clusters_thresholds:
+        #     print 'No of clusters: {}'.format(len(clusters['clusters']))
+        #     print 'Threshold : {}'.format(clusters['threshold'])
+        #     f1_score = evaluate_clusters(clusters['clusters'], labels_lookup)
         # n_faces = 0
         # for c in clusters:
         #     print c
