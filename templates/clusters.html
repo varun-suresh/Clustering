@@ -4,10 +4,25 @@
   <head>
   </head>
   <body>
-    <h1> Face Clusters </h1>
-    <div>
-      Showing clusters x to x+offset
-    </div>
+    <h1> Clusters </h1>
+    <div> Showing clusters from {{offset}} to {{offset+limit}} </div>
+    {% for batch in batches %}
+      {% if batch[0] == offset %}
+        <span style="padding:0.5em;"><b> {{batch[0]}} - {{batch[-1]}} </b></span>
+      {% else %}
+        <a style="padding:0.5em;" href="/clusters?offset={{ batch[0] }}&limit={{ batches[0]|length }}">
+           {{ batch[0] }} - {{ batch[-1] }}
+         </a>
+     {% endif %}
+   {% endfor %}
+   <p></p>
+
+   {% for c in clusters %}
+    {% set img_idx = c[0]%}
+    <a href="/single_cluster?cluster={{ c }}">
+    <div> ({{c | length}} faces in cluster) </div>
+      <img src="/img/{{ idx_to_path[img_idx] }}" >
+    {% endfor %}
   </body>
 
 </html>
