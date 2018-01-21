@@ -4,8 +4,9 @@
   </head>
   <body>
     <h1> Cluster</h1>
-    {% for c in cluster %}
-      <img src="/img/{{idx_to_path[c]}}">
-      {% endfor %}
+    {% for image_idx in clusters[cluster_id] %}
+    <div> {{idx_to_path[img_idx]}}</div>
+      <img src="/img/{{idx_to_path[image_idx]}}">
+    {% endfor %}
   </body>
 </html>
