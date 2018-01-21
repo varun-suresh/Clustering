@@ -40,10 +40,13 @@ def display_one_cluster():
     """
     Method to display images in ine cluster.
     """
-    cluster = request.args.get('cluster')
+    cluster_id = request.args.get('cluster')
+    print type(clusters.keys()[0])
+    print clusters.keys()[0]
     return render_template("single_cluster.html",
+                           cluster_id=cluster_id,
                            idx_to_path=idx_to_path,
-                           cluster=cluster)
+                           clusters=clusters)
 
 
 @app.route('/clusters', methods=["GET"])
@@ -53,32 +56,13 @@ def display_clusters():
     """
     offset = int(request.args.get('offset', '0'))
     limit = int(request.args.get('limit', '50'))
-    clusters = json.load(open("clusters.json"))
-    clusters_as_list = [v for c, v in clusters.iteritems()]
-    clusters_as_list = sorted(clusters_as_list, key=lambda x:-len(x))
-    batches = chunks(range(len(clusters_as_list)), size=limit)
-    # clusters = []
-    # for cluster_id in set(cluster_memberships_emb.values()):
-    #     face_indices = [i for i in cluster_memberships_emb.keys() if str(cluster_memberships_emb[i]) == str(cluster_id)]
-    #     face_indices = promote_selfie_to_top(face_indices)
-    #     clusters.append({
-    #         'face_indices': face_indices,
-    #         'cluster_id': cluster_id
-    #     })
-    # total_number_clusters = len(clusters)
-    # clusters = sorted(clusters, key=lambda c: -len(c['face_indices']))
-    # num_single_clusters = len([c for c in clusters if len(c['face_indices']) == 1])
-    # num_faces = len(face_idx_to_photo_emb)
-    # batches = list(chunks(range(total_number_clusters), limit))
+    clusters_id_sorted = sorted(clusters, key=lambda x : -len(clusters[x]))
+    batches = chunks(range(len(clusters_id_sorted)), size=limit)
     return render_template('clusters.html',
         offset=offset, limit=limit, batches=batches,
-        clusters=clusters_as_list[offset:offset+limit+1],
+        ordered_list=clusters_id_sorted[offset:offset+limit+1],
         idx_to_path=idx_to_path,
-        # face_idx_to_photo=face_idx_to_photo_emb, clusters=clusters[offset:offset+limit+1],
-        # total_number_clusters=total_number_clusters,
-        # num_single_clusters=num_single_clusters,
-        # num_faces=num_faces
-        )
+        clusters=clusters)
 
 if __name__ == "__main__":
 
@@ -86,5 +70,5 @@ if __name__ == "__main__":
     parser.add_argument("--lfw_dir", required=True, type=str)
     args = parser.parse_args()
     idx_to_path = create_idx_to_path(args.lfw_dir)
-    app.run(debug=True)
-    # print idx_to_path
+    clusters = json.load(open("clusters.json"))
+    app.run(debug=False)
