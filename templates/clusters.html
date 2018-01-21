@@ -10,17 +10,17 @@
       {% if batch[0] == offset %}
         <span style="padding:0.5em;"><b> {{batch[0]}} - {{batch[-1]}} </b></span>
       {% else %}
-        <a style="padding:0.5em;" href="/clusters?offset={{ batch[0] }}&limit={{ batches[0]|length }}">
+        <a style="padding:0.5em;" href="/clusters?offset={{ batch[0] }}&limit={{ batch |length }}">
            {{ batch[0] }} - {{ batch[-1] }}
          </a>
      {% endif %}
    {% endfor %}
    <p></p>
 
-   {% for c in clusters %}
-    {% set img_idx = c[0]%}
-    <a href="/single_cluster?cluster={{ c }}">
-    <div> ({{c | length}} faces in cluster) </div>
+   {% for cluster_id in ordered_list %}
+    {% set img_idx = clusters[cluster_id][0]%}
+    <a href="/single_cluster?cluster={{ cluster_id }}">
+    <div> ({{clusters[cluster_id] | length}} faces in cluster) </div>
       <img src="/img/{{ idx_to_path[img_idx] }}" >
     {% endfor %}
   </body>
