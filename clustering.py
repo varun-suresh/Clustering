@@ -7,7 +7,7 @@ from time import time
 from profilehooks import profile
 from multiprocessing import Pool
 from functools import partial
-
+import json
 
 def build_index(dataset, n_neighbors):
     """
@@ -172,10 +172,17 @@ def cluster(descriptor_matrix, n_neighbors=20, thresh=[2]):
 
 
 if __name__ == '__main__':
-    descriptor_matrix = np.random.rand(15000, 180)
-    app_nearest_neighbors, dists = build_index(descriptor_matrix, n_neighbors=200)
+    descriptor_matrix = np.random.rand(20, 10)
+    app_nearest_neighbors, dists = build_index(descriptor_matrix, n_neighbors=2)
     distance_matrix = calculate_symmetric_dist(app_nearest_neighbors)
-    # clusters = cluster(descriptor_matrix, n_neighbors=5)
+    clusters = cluster(descriptor_matrix, n_neighbors=2)
+    # print clusters[0]
+    clusters_to_be_saved = {}
+    for i, cluster in enumerate(clusters[0]["clusters"]):
+        c = [int(x) for x in list(cluster)]
+        clusters_to_be_saved[i] = c
+    with open("clusters.json", "w") as f:
+        json.dump(clusters_to_be_saved, f)
     # n_faces = 0
     # for c in clusters:
     #     n_faces += len(c)
