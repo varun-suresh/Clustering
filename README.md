@@ -34,10 +34,28 @@ python demo.py --lfw_path path_to_lfw_dir -v vector_file
 ```
 
 ## Results
+
+## Visualization
+
+There is a very basic visualization script in place to examine the clusters. To
+use the script, download the LFW images and store them in `yourpath/Clustering/` directory.
+
+Before you can run the visualization script, you must run the demo script to save the clusters. I have also uploaded the [clusters](http://github.com/) file. You can download that and visualize the clusters as well.
+
+```
+python visualize.py --lfw_path lfw/
+```
+On your browser, open [this link](http://localhost:5000/clusters) and you should see the clusters.
+
+![Clusters Page](https://github.com/varun-suresh/Clustering/imgs/visualization.png)
+
+![Single Cluster](https://github.com/varun-suresh/Clustering/imgs/single-cluster.png)
 ### f1 score:
 The best result I have so far is an f1 score of `0.52`, the precision drops quite drastically as the recall increases. I will plot the results in the next couple of days and visualize the results to better understand why the results are not close to the results in the paper.
 
-One reason why the results don't match the paper's results is the vectors used in the `demo.py`. Cosine distance measure was used while training but in building our index, we use Euclidean distances. I will experiment with a deep learning network that used Euclidean distance during training and see if I can reproduce the results in the paper.
+One reason why the results don't match the paper's results is the vectors used in the `demo.py`. Cosine distance measure was used while training but in building our index, we use Euclidean distances.
+
+On a smaller set, I looked at distance matrices and I believe the implementation does exactly what was described in the paper. If anyone can produce vectors using [VGG Face](http://www.robots.ox.ac.uk/~vgg/software/vgg_face/) or [OpenFace](https://github.com/cmusatyalab/openface) and test the performance, that'd be helpful!
 
 ### Timing:
 Using python's multiprocessing module, clustering LFW faces took about ~40 seconds. I did this on an 8-core machine using 4 processes(Using all 8 does not improve it by much because some cores are needed for background processes). The same experiment took 7 seconds on a 20 core machine.
