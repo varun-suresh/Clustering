@@ -32,6 +32,7 @@ def create_neighbor_lookup(nearest_neighbors):
     nn_lookup = {}
     for i in range(nearest_neighbors.shape[0]):
         nn_lookup[i] = nearest_neighbors[i, :]
+    # print "NN Lookup :",nn_lookup
     return nn_lookup
 
 
@@ -43,6 +44,7 @@ def calculate_symmetric_dist_row(nearest_neighbors, nn_lookup, row_no):
     """
     dist_row = np.zeros([1, nearest_neighbors.shape[1]])
     f1 = nn_lookup[row_no]
+    # print "f1 : ", f1
     for idx, neighbor in enumerate(f1[1:]):
         Oi = idx+1
         try:
@@ -51,14 +53,14 @@ def calculate_symmetric_dist_row(nearest_neighbors, nn_lookup, row_no):
             # print 'Correct Oj: {}'.format(Oj)
         except IndexError:
             Oj = nearest_neighbors.shape[1]+1
-        f2 = set(nn_lookup[row[0]])
+        f2 = set(nn_lookup[neighbor])
         f1 = set(f1)
         dij = len(f1.difference(f2))
         dji = len(f2.difference(f1))
-
         # print 'dij: {}, dji: {}'.format(dij, dji)
         # print 'Oi: {}, Oj: {}'.format(Oi, Oj)
-        dist_row[0, idx+1] = float(dij + dji)/min(Oi, Oj)
+
+        dist_row[0, Oi] = float(dij + dji)/min(Oi, Oj)
     # print dist_row
     return dist_row
 
@@ -154,7 +156,7 @@ def create_plausible_neighbor_lookup(app_nearest_neighbors,
     return plausible_neighbors
 
 
-def cluster(descriptor_matrix, n_neighbors=20, thresh=[2]):
+def cluster(descriptor_matrix, n_neighbors=10, thresh=[2]):
     """
     Master function. Takes the descriptor matrix and returns clusters.
     n_neighbors are the number of nearest neighbors considered and thresh
