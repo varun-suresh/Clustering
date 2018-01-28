@@ -41,8 +41,6 @@ def display_one_cluster():
     Method to display images in ine cluster.
     """
     cluster_id = request.args.get('cluster')
-    print type(clusters.keys()[0])
-    print clusters.keys()[0]
     return render_template("single_cluster.html",
                            cluster_id=cluster_id,
                            idx_to_path=idx_to_path,
@@ -68,7 +66,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser("Visualize Clusters")
     parser.add_argument("--lfw_dir", required=True, type=str)
+    parser.add_argument("--clusters", default="data/clusters.json", type=str)
     args = parser.parse_args()
     idx_to_path = create_idx_to_path(args.lfw_dir)
-    clusters = json.load(open("clusters.json"))
+    clusters = json.load(args.clusters)
     app.run(debug=False)
