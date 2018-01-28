@@ -33,7 +33,7 @@ def approximate_rank_order_clustering(vectors):
     """
     Cluster the input vectors.
     """
-    clusters = cluster(vectors, n_neighbors=20, thresh= [2.2])
+    clusters = cluster(vectors, n_neighbors=200, thresh= [1.9])
     return clusters
 
 
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     if args['vector_file']:
         f = sio.loadmat(args['vector_file'])
         vectors = f['features']
-        labels = f['labels_original'][0]
+        labels = f['labels_original']
         clusters_thresholds = approximate_rank_order_clustering(vectors)
         clusters_at_th = clusters_thresholds[0]
         clusters_to_be_saved = {}
@@ -106,11 +106,11 @@ if __name__ == '__main__':
         with open("clusters.json","w") as f:
             json.dump(clusters_to_be_saved, f)
 
-        # labels_lookup = create_labels_lookup(labels)
-        # for clusters in clusters_thresholds:
-        #     print 'No of clusters: {}'.format(len(clusters['clusters']))
-        #     print 'Threshold : {}'.format(clusters['threshold'])
-        #     f1_score = evaluate_clusters(clusters['clusters'], labels_lookup)
+        labels_lookup = create_labels_lookup(labels)
+        for clusters in clusters_thresholds:
+            print 'No of clusters: {}'.format(len(clusters['clusters']))
+            print 'Threshold : {}'.format(clusters['threshold'])
+            f1_score = evaluate_clusters(clusters['clusters'], labels_lookup)
         # n_faces = 0
         # for c in clusters:
         #     print c
