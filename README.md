@@ -47,9 +47,9 @@ python visualize.py --lfw_path lfw/
 ```
 On your browser, open [this link](http://localhost:5000/clusters) and you should see the clusters.
 
-![Clusters Page](https://github.com/varun-suresh/Clustering/imgs/visualization.png)
+![Clusters Page](https://github.com/varun-suresh/Clustering/tree/master/imgs/visualization.png)
 
-![Single Cluster](https://github.com/varun-suresh/Clustering/imgs/single-cluster.png)
+![Single Cluster](https://github.com/varun-suresh/Clustering/tree/master/imgs/single-cluster.png)
 ### f1 score:
 The best result I have so far is an f1 score of `0.52`, the precision drops quite drastically as the recall increases. I will plot the results in the next couple of days and visualize the results to better understand why the results are not close to the results in the paper.
 
