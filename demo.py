@@ -103,7 +103,7 @@ if __name__ == '__main__':
             c = [int(x) for x in list(cluster)]
             clusters_to_be_saved[i] = c
 
-        with open("clusters.json","w") as f:
+        with open("data/clusters.json","w") as f:
             json.dump(clusters_to_be_saved, f)
 
         labels_lookup = create_labels_lookup(labels)
