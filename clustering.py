@@ -14,14 +14,18 @@ def build_index(dataset, n_neighbors):
     Takes a dataset, returns the "n" nearest neighbors
     """
 # Initialize FLANN
+    pyflann.set_distance_type(distance_type='euclidean')
     flann = pyflann.FLANN()
     params = flann.build_index(dataset,
                                algorithm='kdtree',
                                trees=4
                                )
-    # print params
+    #print params
     nearest_neighbors, dists = flann.nn_index(dataset, n_neighbors,
                                               checks=params['checks'])
+    #for i in xrange(20):
+    #    print nearest_neighbors[3,i]
+    #    print dists[3,i]
     return nearest_neighbors, dists
 
 
@@ -37,7 +41,7 @@ def create_neighbor_lookup(nearest_neighbors):
 
 
 # @profile
-def calculate_symmetric_dist_row(nearest_neighbors, nn_lookup, row_no):
+def calculate_symmetric_dist_row(nearest_neighbors, nn_lookup, L2_dists, row_no):
     """
     This function calculates the symmetric distances for one row in the
     matrix.
@@ -47,25 +51,46 @@ def calculate_symmetric_dist_row(nearest_neighbors, nn_lookup, row_no):
     # print "f1 : ", f1
     for idx, neighbor in enumerate(f1[1:]):
         Oi = idx+1
+        co_neighbor = True
         try:
             row = nn_lookup[neighbor]
             Oj = np.where(row == row_no)[0][0] + 1
             # print 'Correct Oj: {}'.format(Oj)
         except IndexError:
             Oj = nearest_neighbors.shape[1]+1
-        f2 = set(nn_lookup[neighbor])
-        f1 = set(f1)
-        dij = len(f1.difference(f2))
-        dji = len(f2.difference(f1))
+            co_neighbor = False
+       # method 1 to get dij dji
+        #dij
+        f11 = set(f1[0:Oi])
+        f21 = set(nn_lookup[neighbor])
+        dij = len(f11.difference(f21))
+        #dji
+        f12 = set(f1)
+        f22 = set(nn_lookup[neighbor][0:Oj])
+        dji = len(f22.difference(f12))
+
+       # method 2 to get dij dji
+       # f1 = set(f1)
+       # f2 = set(nn_lookup[neighbor])
+       # dij = len(f1.difference(f2))
+       # dji = len(f2.difference(f1))
+
         # print 'dij: {}, dji: {}'.format(dij, dji)
         # print 'Oi: {}, Oj: {}'.format(Oi, Oj)
 
-        dist_row[0, Oi] = float(dij + dji)/min(Oi, Oj)
+       # method 1 to get dij dji
+        if not co_neighbor:
+            dist_row[0, Oi] = 9999.0
+        else:
+            dist_row[0, Oi] = float(dij + dji)/min(Oi, Oj)
+
+       # method 2 to get dij dji
+       # dist_row[0, Oi] = float(dij + dji)/min(Oi, Oj)
     # print dist_row
     return dist_row
 
 
-def calculate_symmetric_dist(app_nearest_neighbors):
+def calculate_symmetric_dist(app_nearest_neighbors, L2_dists):
     """
     This function calculates the symmetric distance matrix.
     """
@@ -73,12 +98,14 @@ def calculate_symmetric_dist(app_nearest_neighbors):
     nn_lookup = create_neighbor_lookup(app_nearest_neighbors)
     d = np.zeros(app_nearest_neighbors.shape)
     p = Pool(processes=4)
-    func = partial(calculate_symmetric_dist_row, app_nearest_neighbors, nn_lookup)
+    func = partial(calculate_symmetric_dist_row, app_nearest_neighbors, nn_lookup, L2_dists)
     results = p.map(func, range(app_nearest_neighbors.shape[0]))
     for row_no, row_val in enumerate(results):
         d[row_no, :] = row_val
     d_time = time()-dist_calc_time
     print 'Distance calculation time : {}'.format(d_time)
+    #for i in xrange(30):
+    #    print d[4,i]
     return d
 
 
@@ -146,6 +173,11 @@ def create_plausible_neighbor_lookup(app_nearest_neighbors,
                                      np.where(
                                             distance_matrix[i, :] <= thresh)]
                                              [0]))
+       # if i == 4:
+       #     print app_nearest_neighbors[i,0:30]
+       #     print distance_matrix[i,0:30]
+       #     print plausible_neighbors[i]
+
         # min_dist = np.min(distance_matrix[i, 1:])
         # if min_dist <= thresh:
         #     nn_indices = np.where(distance_matrix[i, :] == min_dist)
@@ -163,7 +195,9 @@ def cluster(descriptor_matrix, n_neighbors=10, thresh=[2]):
     is the clustering distance threshold
     """
     app_nearest_neighbors, dists = build_index(descriptor_matrix, n_neighbors)
-    distance_matrix = calculate_symmetric_dist(app_nearest_neighbors)
+    distance_matrix = calculate_symmetric_dist(app_nearest_neighbors, dists)
+   # print '???'
+   # print distance_matrix.shape
     # print distance_matrix
     clusters = []
     for th in thresh:
