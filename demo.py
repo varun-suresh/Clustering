@@ -33,7 +33,7 @@ def approximate_rank_order_clustering(vectors):
     """
     Cluster the input vectors.
     """
-    clusters = cluster(vectors, n_neighbors=200, thresh= [1.9])
+    clusters = cluster(vectors, n_neighbors=200, thresh= [1.1])
     return clusters
 
 
@@ -80,7 +80,7 @@ def create_labels_lookup(labels):
     """
     labels_lookup = {}
     for idx, label in enumerate(labels):
-        labels_lookup[idx] = int(label[0][0])
+        labels_lookup[idx] = int(label[0][:])
     return labels_lookup
 
 
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     if args['vector_file']:
         f = sio.loadmat(args['vector_file'])
         vectors = f['features']
-        labels = f['labels_original']
+        labels = f['labels_original'][0]
         clusters_thresholds = approximate_rank_order_clustering(vectors)
         clusters_at_th = clusters_thresholds[0]
         clusters_to_be_saved = {}
