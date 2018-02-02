@@ -80,3 +80,8 @@ Face verification experiment
 }
 ```
 If you use this implementation, please consider citing this implementation and code repository.
+
+## Precision Drop Issue Fixed(Mengyue Geng)
+The original code has some bugs in evaluation.py and misunderstandings in clustering.py, these cases the above problem of precision drop, but already fixed. 
+
+By using LightenedCNN_C_lfw.mat the algorithm can reach f1_score = 0.88, which matches the paper's result
