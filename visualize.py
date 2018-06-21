@@ -69,5 +69,5 @@ if __name__ == "__main__":
     parser.add_argument("--clusters", default="data/clusters.json", type=str)
     args = parser.parse_args()
     idx_to_path = create_idx_to_path(args.lfw_dir)
-    clusters = json.load(args.clusters)
-    app.run(debug=False)
+    clusters = json.load(open(args.clusters))
+    app.run()
