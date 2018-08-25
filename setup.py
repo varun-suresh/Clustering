@@ -5,7 +5,7 @@ from setuptools import (
     find_packages)
 
 runtime_packages = [
-    'flask == 0.10.1',
+    'flask == 0.12.3',
     'numpy==1.12.1',
     'matplotlib==1.5.2',
     'profilehooks==1.9.0',
