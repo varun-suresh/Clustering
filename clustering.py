@@ -93,8 +93,7 @@ def calculate_symmetric_dist(app_nearest_neighbors):
     for row_no, row_val in enumerate(results):
         d[row_no, :] = row_val
     d_time = time()-dist_calc_time
-    print 'Distance calculation time : {}'.format(d_time)
-
+    print("Distance calculation time : {}".format(d_time))
     return d
 
 
@@ -184,7 +183,7 @@ def cluster(descriptor_matrix, n_neighbors=10, thresh=[2]):
     clusters = []
     for th in thresh:
         clusters_th = aro_clustering(app_nearest_neighbors, distance_matrix, th)
-        print 'N Clusters: {}, thresh: {}'.format(len(clusters_th), th)
+        print("N Clusters: {}, thresh: {}".format(len(clusters_th), th))
         clusters.append({'clusters': clusters_th, 'threshold': th})
     return clusters
 

@@ -32,7 +32,7 @@ def create_idx_to_path(lfw_dir):
 
 @app.route('/img/<path:fpath>', methods=['GET'])
 def get_img_path(fpath):
-    print os.path.dirname(fpath), fpath.split('/')[-1]
+    print(os.path.dirname(fpath), fpath.split('/')[-1])
     return send_from_directory(os.path.dirname(fpath),fpath.split('/')[-1])
 
 @app.route('/single_cluster', methods=["GET"])

@@ -18,10 +18,10 @@ def plot_histogram(lfw_dir):
         for dirname in dirs:
             n_photos = len(os.listdir(os.path.join(root, dirname)))
             filecount_dict[dirname] = n_photos
-    print 'No of unique people: {}'.format(len(filecount_dict.keys()))
+    print("No of unique people: {}".format(len(filecount_dict.keys())))
     df = pd.DataFrame(filecount_dict.items(), columns=['Name', 'Count'])
-    print 'Singletons : {}\nTwo :{}\n'.format((df['Count'] == 1).sum(),
-                                              (df['Count'] == 2).sum())
+    print("Singletons : {}\nTwo :{}\n".format((df['Count'] == 1).sum(),
+                                              (df['Count'] == 2).sum()))
     plt.hist(df['Count'], bins=max(df['Count']))
     plt.title('Cluster Sizes')
     plt.xlabel('No of images in folder')
@@ -63,11 +63,11 @@ def evaluate_clusters(clusters, labels_lookup):
     """
     precision, recall = calculate_pairwise_pr(clusters, labels_lookup)
     f1_score = 2*precision*recall/(precision+recall)
-    print 'Precision : {}\nRecall : {}\nf1_score : {}'.format(precision,
+    print("Precision : {}\nRecall : {}\nf1_score : {}".format(precision,
                                                               recall,
                                                               f1_score
-                                                              )
-    print '---------------------------------------------------------'
+                                                              ))
+    print("---------------------------------------------------------")
     return f1_score
 
 
@@ -108,8 +108,8 @@ if __name__ == '__main__':
 
         labels_lookup = create_labels_lookup(labels)
         for clusters in clusters_thresholds:
-            print 'No of clusters: {}'.format(len(clusters['clusters']))
-            print 'Threshold : {}'.format(clusters['threshold'])
+            print("No of clusters: {}".format(len(clusters['clusters'])))
+            print("Threshold : {}".format(clusters['threshold']))
             f1_score = evaluate_clusters(clusters['clusters'], labels_lookup)
         # n_faces = 0
         # for c in clusters:

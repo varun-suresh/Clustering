@@ -5,17 +5,28 @@ from setuptools import (
     find_packages)
 
 runtime_packages = [
-    'flask == 0.12.3',
-    'numpy==1.12.1',
-    'matplotlib==1.5.2',
-    'profilehooks==1.9.0',
-    'pandas==0.20.2',
-    'scipy==0.19.0'
+"Click==7.0",
+"cycler==0.10.0",
+"Flask==1.1.1",
+"itsdangerous==1.1.0",
+"Jinja2==2.10.1",
+"kiwisolver==1.1.0",
+"MarkupSafe==1.1.1",
+"matplotlib==3.1.1",
+"numpy==1.17.0",
+"pandas==0.25.0",
+"profilehooks==1.11.0",
+"pyparsing==2.4.1.1",
+"python-dateutil==2.8.0",
+"pytz==2019.1",
+"scipy==1.3.0",
+"six==1.12.0",
+"Werkzeug==0.15.5",
 ]
 
 setup(
     name='approximate-nn-clustering',
-    version='0.0.1',
+    version='0.0.2',
     description='A modified version of rank order clustering',
     author='Varun Suresh',
     author_email='fab.varun@gmail.com',
