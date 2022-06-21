@@ -13,7 +13,7 @@ runtime_packages = [
 "kiwisolver==1.1.0",
 "MarkupSafe==1.1.1",
 "matplotlib==3.1.1",
-"numpy==1.17.0",
+"numpy==1.22.0",
 "pandas==0.25.0",
 "profilehooks==1.11.0",
 "pyparsing==2.4.1.1",
