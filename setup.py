@@ -7,7 +7,7 @@ from setuptools import (
 runtime_packages = [
 "Click==7.0",
 "cycler==0.10.0",
-"Flask==1.1.1",
+"Flask==2.3.2",
 "itsdangerous==1.1.0",
 "Jinja2==2.11.3",
 "kiwisolver==1.1.0",
