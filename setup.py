@@ -19,7 +19,7 @@ runtime_packages = [
 "pyparsing==2.4.1.1",
 "python-dateutil==2.8.0",
 "pytz==2019.1",
-"scipy==1.3.0",
+"scipy==1.10.0",
 "six==1.12.0",
 "Werkzeug==2.2.3",
 ]
