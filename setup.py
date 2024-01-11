@@ -9,7 +9,7 @@ runtime_packages = [
 "cycler==0.10.0",
 "Flask==2.3.2",
 "itsdangerous==1.1.0",
-"Jinja2==2.11.3",
+"Jinja2==3.1.3",
 "kiwisolver==1.1.0",
 "MarkupSafe==1.1.1",
 "matplotlib==3.1.1",
