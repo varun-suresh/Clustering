@@ -21,7 +21,7 @@ runtime_packages = [
 "pytz==2019.1",
 "scipy==1.10.0",
 "six==1.12.0",
-"Werkzeug==3.0.3",
+"Werkzeug==3.0.6",
 ]
 
 setup(
